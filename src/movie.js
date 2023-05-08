@@ -18,7 +18,7 @@ function getMovieDetails(imdbID) {
       let element = document.createElement("div");
 
       element.classList.add("col-12");
-      element.innerHTML = `<div class="card mb-3">
+      element.innerHTML = `<div class="mb-3">
       <div class="row g-0">
         <div class="col-md-3" style="text-align:center">
           <img src="${res.Poster || "./src/assets/movies.jpg"}"
@@ -76,6 +76,14 @@ function getMovieDetails(imdbID) {
   xhttp.open("GET", `${domain}?${query}`, true);
   xhttp.send();
 }
+
+$('#modalMovieDetails').on('hidden.bs.modal', function () {
+  document.getElementById("movie-details").innerHTML="";
+});
+
+$('#modalMovieTrailer').on('hidden.bs.modal', function () {
+  stopVideo();
+});
 
 // function init() {
 //   getMovieDetails();

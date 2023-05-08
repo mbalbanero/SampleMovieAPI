@@ -9,7 +9,7 @@ function searchMovie() {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      let results = JSON.parse(xhttp.responseText).Search;
+      results = JSON.parse(xhttp.responseText).Search;
       generatePagination(JSON.parse(xhttp.responseText).totalResults);
       let moviesRow = document.querySelector(".movies-row");
       moviesRow.innerHTML = "";
@@ -17,22 +17,25 @@ function searchMovie() {
         let element = document.createElement("div");
         element.classList.add("col-12");
         element.classList.add("col-md-3");
+        element.classList.add("movie-poster");
         element.setAttribute("style","text-align:center");
-        // element.innerHTML = `
-        // <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}" >
-        //   <img src="${result.Poster || "./src/assets/movies.jpg"}"
-        //   class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"  onmouseover="playThisVideo('C0BMx-qxsP4','${result.imdbID}')" onmouseout="stopVideo('${result.imdbID}')"  />
-        // </a>
-        // <div id="div${result.imdbID}" style="display:flex">
-        //     <div id="iframe${result.imdbID}" />
-        //   </div>
-        // `;
-
-        element.innerHTML = `
-        <a href="#" data-toggle="modal" data-target="#exampleModalCenter" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
+        element.innerHTML = `<div>
+        <a href="#" data-toggle="modal" data-target="#modalMovieDetails" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
           <img src="${result.Poster || "./src/assets/movies.jpg"}"
           class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"/>
         </a>
+        </div>
+        <div>
+        ${result.Title}
+        </div>
+        <div class="divMovieTrailer">
+        <a href="#" class="btn btn-outline-dark btn-play-trailer" data-toggle="modal" data-target="#modalMovieTrailer" onclick="getTrailerVideo('${result.Title}')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+          <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+          </svg>
+          Trailer
+        </a>
+        </div>
         `;
         moviesRow.appendChild(element);
       });
@@ -70,17 +73,16 @@ init();
 
 
 var player;
-function stopVideo(imdbID) {
-  let div = document.getElementById('div' + imdbID);
+function stopVideo() {
+  let div = document.getElementById('movie-trailer');
   div.innerHTML ="";
-  div.innerHTML=`<div id="iframe${imdbID}" />`
+  div.innerHTML=`<div id="player" />`
  }
 
-function playThisVideo(videoId, imdbID){
-  document.getElementById('iframe' + imdbID).setAttribute("style","display:block");
-	player = new YT.Player('iframe' +imdbID, {
-    videoId: videoId,
-    playerVars: { 'autoplay': 1, 'controls': 0, 'playsinline': 0 },
+function playThisVideo(videoID){
+	player = new YT.Player('player', {
+    videoId: videoID,
+    playerVars: { 'autoplay': 1, 'controls': 0, 'playsinline': 1 },
     events: {
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange
@@ -102,7 +104,8 @@ function onPlayerStateChange(event) {
 
 function changePage(page){
   let domain = "https://www.omdbapi.com";
-
+  let results = [];
+  
   let movieTitle = document.querySelector(".movie-title-input").value;
   let query = `apikey=${app.apiKey}&s=${movieTitle}&plot=full&page=${page}`;
 
@@ -110,7 +113,7 @@ function changePage(page){
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      let results = JSON.parse(xhttp.responseText).Search;
+       results = JSON.parse(xhttp.responseText).Search;
 
       let moviesRow = document.querySelector(".movies-row");
       moviesRow.innerHTML = "";
@@ -119,6 +122,7 @@ function changePage(page){
         let element = document.createElement("div");
         element.classList.add("col-12");
         element.classList.add("col-md-3");
+        element.classList.add("movie-poster");
         element.setAttribute("style","text-align:center");
         // element.innerHTML = `
         // <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}">
@@ -127,11 +131,23 @@ function changePage(page){
         // </a>
         // `;
 
-        element.innerHTML = `
-        <a href="#" data-toggle="modal" data-target="#exampleModalCenter" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
+        element.innerHTML = `<div>
+        <a href="#" data-toggle="modal" data-target="#modalMovieDetails" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
           <img src="${result.Poster || "./src/assets/movies.jpg"}"
           class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"/>
         </a>
+        </div>
+        <div>
+        ${result.Title}
+        </div>
+        <div class="divMovieTrailer">
+        <a href="#" class="btn btn-outline-dark btn-play-trailer" data-toggle="modal" data-target="#modalMovieTrailer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+          <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+          </svg>
+          Trailer
+        </a>
+        </div>
         `;
         moviesRow.appendChild(element);
       });
@@ -244,11 +260,29 @@ const setCurrentPage = (pageNum) => {
 };
 
 
-$('#exampleModalCenter').on('shown.bs.modal', function () {
+$('#modalMovieDetails').on('shown.bs.modal', function () {
   // document.getElementById("modal-body").innerHTML="test";
-  alert("show");
 });
 
-$('#exampleModalCenter').on('hidden.bs.modal', function () {
-  document.getElementById("movie-details").innerHTML="";
-});
+
+
+function getTrailerVideo(movieTitle){
+  let domain = "https://www.googleapis.com/youtube/v3/search";
+  let query = `key=${app.youtubeKey}&type=video&maxResults=1&q=${movieTitle + ' Official Trailer'}`;
+  let videoId = "";
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      let results = JSON.parse(xhttp.responseText).items;
+      results.map((result, key) => {
+        videoId= result.id.videoId;
+      });
+      playThisVideo(videoId);
+  }
+};
+  xhttp.open("GET", `${domain}?${query}`, true);
+  xhttp.send();
+  
+}
+

@@ -1,3 +1,7 @@
+body,html{
+  background: black;
+  color:white;
+}
 .hidden {
     display: none;
   }
@@ -20,16 +24,17 @@
     height: 2.5rem;
     width: 2.5rem;
     border-radius: .2rem;
+    color:white;
   }
   
   .pagination-number:hover,
   .pagination-button:not(.disabled):hover {
-    background: #fff;
+    background: gray;
   }
   
   .pagination-number.active {
     color: #fff;
-    background: #0085b6;
+    background: gray;
   }
   
   footer {
@@ -54,11 +59,43 @@
   }
   @media (min-width: 768px) 
   {
-  .col-md-3 {
+  .col-md-3.movie-poster {
     max-width: 20%;
   }
   }
 
   .col-12 {
   padding-bottom: 10px;
+  }
+
+  .movie-poster{
+    background: #1a1a1a;
+    color: #fff;
+    padding: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top:10px;
+    margin-bottom: 10px;
+  }
+
+  .btn-play-trailer{
+    background: transparent;
+    color: #fff;
+    border: transparent;
+  }
+
+  #modalMovieDetails .modal-body,.movie-details .col-md-3,.movie-details .col-md-9,
+  #modalMovieTrailer .modal-body,#player{
+    background: #1a1a1a;
+    color: #fff;
+  }
+  .modal-header{
+    background: #1a1a1a;
+  }
+  #modalMovieDetails .modal-header button,#modalMovieTrailer .modal-header button{
+    color: #fff;
+  }
+
+  #player{
+    width: 100%;
   }
