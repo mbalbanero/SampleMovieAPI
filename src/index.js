@@ -17,14 +17,22 @@ function searchMovie() {
         let element = document.createElement("div");
         element.classList.add("col-12");
         element.classList.add("col-md-3");
+        element.setAttribute("style","text-align:center");
+        // element.innerHTML = `
+        // <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}" >
+        //   <img src="${result.Poster || "./src/assets/movies.jpg"}"
+        //   class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"  onmouseover="playThisVideo('C0BMx-qxsP4','${result.imdbID}')" onmouseout="stopVideo('${result.imdbID}')"  />
+        // </a>
+        // <div id="div${result.imdbID}" style="display:flex">
+        //     <div id="iframe${result.imdbID}" />
+        //   </div>
+        // `;
+
         element.innerHTML = `
-        <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}" >
+        <a href="#" data-toggle="modal" data-target="#exampleModalCenter" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
           <img src="${result.Poster || "./src/assets/movies.jpg"}"
-          class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"  onmouseover="playThisVideo('C0BMx-qxsP4','${result.imdbID}')" onmouseout="stopVideo('${result.imdbID}')"  />
+          class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"/>
         </a>
-        <div id="div${result.imdbID}" style="display:flex">
-            <div id="iframe${result.imdbID}" />
-          </div>
         `;
         moviesRow.appendChild(element);
       });
@@ -111,10 +119,18 @@ function changePage(page){
         let element = document.createElement("div");
         element.classList.add("col-12");
         element.classList.add("col-md-3");
+        element.setAttribute("style","text-align:center");
+        // element.innerHTML = `
+        // <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}">
+        //   <img src="${result.Poster || "./src/assets/movies.jpg"}"
+        //   class="img-fluid rounded" alt="${result.Title}" />
+        // </a>
+        // `;
+
         element.innerHTML = `
-        <a href="./movie.html?id=${result.imdbID}" alt="${result.Title}">
+        <a href="#" data-toggle="modal" data-target="#exampleModalCenter" alt="${result.Title}" onclick="getMovieDetails('${result.imdbID}')">
           <img src="${result.Poster || "./src/assets/movies.jpg"}"
-          class="img-fluid rounded" alt="${result.Title}" />
+          class="img-fluid rounded" alt="${result.Title}" value="${result.Title}"/>
         </a>
         `;
         moviesRow.appendChild(element);
@@ -226,3 +242,13 @@ const setCurrentPage = (pageNum) => {
     }
   });
 };
+
+
+$('#exampleModalCenter').on('shown.bs.modal', function () {
+  // document.getElementById("modal-body").innerHTML="test";
+  alert("show");
+});
+
+$('#exampleModalCenter').on('hidden.bs.modal', function () {
+  document.getElementById("movie-details").innerHTML="";
+});

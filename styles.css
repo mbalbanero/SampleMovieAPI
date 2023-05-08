@@ -47,6 +47,18 @@
     color: #DC143C;
   } 
 
-  .col-md-3{
-    width:20%
+  @media screen and (min-width: 676px) {
+    .modal-dialog {
+      max-width: 70%; /* New width for default modal */
+    }
+  }
+  @media (min-width: 768px) 
+  {
+  .col-md-3 {
+    max-width: 20%;
+  }
+  }
+
+  .col-12 {
+  padding-bottom: 10px;
   }

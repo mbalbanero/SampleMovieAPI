@@ -1,11 +1,11 @@
-function getMovieDetails() {
+function getMovieDetails(imdbID) {
   let url = new URL(location.href);
-  let params = new URLSearchParams(url.search);
+  // let params = new URLSearchParams(url.search);
 
   let domain = "https://www.omdbapi.com";
   let results = [];
 
-  let query = `apikey=${app.apiKey}&i=${params.get("id")}`;
+  let query = `apikey=${app.apiKey}&i=${imdbID}`;
 
   var xhttp = new XMLHttpRequest();
 
@@ -20,7 +20,7 @@ function getMovieDetails() {
       element.classList.add("col-12");
       element.innerHTML = `<div class="card mb-3">
       <div class="row g-0">
-        <div class="col-md-3">
+        <div class="col-md-3" style="text-align:center">
           <img src="${res.Poster || "./src/assets/movies.jpg"}"
           class="img-fluid rounded-start" alt="..." />
         </div>
@@ -77,8 +77,8 @@ function getMovieDetails() {
   xhttp.send();
 }
 
-function init() {
-  getMovieDetails();
-}
+// function init() {
+//   getMovieDetails();
+// }
 
-init();
+// init();
